@@ -1,1 +1,201 @@
-<p>Hello World</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Birthday present</title>
+
+    <style>
+      h1 {
+        color: white;
+      }
+
+      * {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        margin: 40px;
+        font-family: Arial, sans-serif;
+        background: #111;
+      }
+
+      .card {
+        width: 100%;
+        perspective: 1000px;
+        cursor: pointer;
+      }
+
+      .card-inner {
+        position: relative;
+        width: 100%;
+        min-height: 220px;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+
+      .card.flipped .card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .card-front,
+      .card-back {
+        position: absolute;
+        inset: 0;
+
+        padding: 30px;
+        border-radius: 16px;
+
+        box-sizing: border-box;
+
+        backface-visibility: hidden;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .card-front {
+        background: #222;
+        color: white;
+        font-size: x-large;
+      }
+
+      .card-back {
+        font-size: large;
+        background: #9e5594;
+        color: white;
+        transform: rotateY(180deg);
+      }
+
+      /* Makes the parent as tall as the tallest side */
+      .card::before {
+        content: "";
+        display: block;
+        padding-top: 20px;
+      }
+
+      #countdown {
+        font-size: 3rem;
+        margin-top: 20px;
+        font-size: larger;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>HAPPY BIRTHDAY!</h1>
+    <div class="timer">
+      <div id="countdown">Time Remaining</div>
+    </div>
+
+    <div id="cards"></div>
+
+    <script>
+      const cards = [
+        {
+          front: "Open this card for when you are sad",
+          back: "Whatever might be making you sad, I'm here for you to put your head on my shoulder. And remember that I will always be here to help you. Hope you get better :((",
+        },
+        {
+          front: "Open this card for when you are excited!",
+          back: "I'm guessing you are the yippy jumping cat right now, hihi.",
+        },
+        {
+          front: "Open this card for when you are stressed",
+          back: "I actually recommend doing a breathing exercise. If it doesn't help, you can reach out to me. Whatever might be bothering you, it will all be fine and you will get through :))",
+        },
+        {
+          front: "Open this card for when you are tired",
+          back: 'answer = need_sleep == true ? "Go to sleep looooooove..." : tired_of_something == true ? "Ignore it, go do something else for a little" : "Quick 10min "away from anything" break :)"',
+        },
+        {
+          front: "Open this card for when you are lazy",
+          back: "If something is due date, push through and manage to get a headstart for the next day when you have to do it. If you just wanna do anything else... I recommend setting 30min for this and then you have to do the real thing.",
+        },
+        {
+          front: "Open this card for when you are indecisive",
+          back: "Take all options and number them, M - number of all options. Then take today's day - N, and then do N % M + 1. There :))",
+        },
+        {
+          front: "Open this card for when you are unmotivated",
+          back: "YOU CAN DO IT!!!! IF YOU DO IT NOW, NO NEED TO DO IT LATER! THE SOONER IT ENDS, THE BETTER!!!!",
+        },
+        {
+          front: "Open this card for when you are impatient",
+          back: "Calm down... Nothing will get faster in any way, you will just lose your patience even more.",
+        },
+        {
+          front: "Open this card for when you are overstimulated",
+          back: "Close your eyes. Remember a cute moment we had once :) I bet it will make you smile and calm down.",
+        },
+        {
+          front: "Open this card for when you are angy",
+          back: "BREATHE LOVE, BREATHEEEEEEEE. ME HERE BTW. Even if you are angy at me (hope not), you can message me in regards of this message.",
+        },
+        {
+          front: "Open this card for when you are lonely",
+          back: "I wish I could be there to hug you :))) Love you <3 Hope to see you soon.",
+        },
+        {
+          front: 'Open this card for when you are "can\'t care anymore"',
+          back: "Awh :(( Can you tell me what's bothering you? Me here to help :) A break can also help ;) Go watch youtube for 30min.",
+        },
+        {
+          front: "Open this card for when you are stuck on something",
+          back: "1. Talk to a duck.    2. Talk to ME!",
+        },
+        {
+          front: "Open this card for when you sleepy",
+          back: "Love... go eep. hihi ;)",
+        },
+      ];
+
+      function renderCards(cards) {
+        return cards
+          .map(
+            (card) => `
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">${card.front}</div>
+        <div class="card-back">${card.back}</div>
+      </div>
+    </div>
+    `,
+          )
+          .join("");
+      }
+      document.getElementById("cards").innerHTML = renderCards(cards);
+
+      //////////////////////////////
+      const targetDate = new Date("2026-11T00:00:00");
+
+      const countdownEl = document.getElementById("countdown");
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          countdownEl.innerHTML = "Time is up";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.innerHTML = `
+        ${days}d ${hours}h ${minutes}m ${seconds}s
+    `;
+      }
+
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+    </script>
+  </body>
+</html>
